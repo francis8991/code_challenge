@@ -8,7 +8,9 @@
 
   let chart: typeof data.data | undefined = undefined
   let initial = false
-  $: if (initial) chart = data.data
+  $: if (initial) {
+    chart = data.data
+  }
   onMount(() => {
     initial = true
   })
@@ -31,6 +33,8 @@
       return undefined
     }
   }
+
+  $: areaStyle = chart?.linearGradient ? setAreaStyle : chart?.areaStyle || undefined
 </script>
 
 <div class="text-center">
@@ -38,10 +42,11 @@
   <button on:click={() => (mode = mode === 'line' ? 'stack' : 'line')} class="underline text-red-400">click switch mode</button>
 </div>
 <Challenge
-  areaStyle={chart?.linearGradient ? setAreaStyle : chart?.areaStyle || undefined}
+  {areaStyle}
   mode={mode}
   data={chart?.demoData}
   legend
   fieldNames={{ xAxis: 'week_day', yAxis: 'data' }}
-  option={chart?.option} class="w-full h-full"
+  option={chart?.option}
+  class="w-full h-full"
 />

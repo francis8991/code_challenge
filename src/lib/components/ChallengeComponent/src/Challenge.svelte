@@ -8,6 +8,7 @@
   export let mode: ModeType = 'line'
   export let data: DataType<R, T>[] = []
   export let areaStyle: AreaStyleProps<R, T> = undefined
+  export let showBrush: boolean = true
   export let fieldNames: { xAxis: string; yAxis: string } = { xAxis: 'xAxis', yAxis: 'yAxis' }
   export let xAxisTextStyle: ((record: T, index?: number) => EChartOption['textStyle']) | undefined = undefined
   export let option: ChallengeOption = {
@@ -61,7 +62,8 @@
   //   return val && 'seriesName' in val[0];
   // }
   const [register, {
-    setOption
+    setOption,
+    clear
   }] = useEchart()
 
   function getAreaStyle(record: DataType<R, T>, i: number): AreaStyle {
@@ -99,9 +101,16 @@
   }
 
   const formatOptions = async (customOption: ChallengeOption) => {
-    await tick()
+    clear()
     setOption({
       ...customOption,
+      toolbox: customOption.toolbox?.feature && !customOption.toolbox?.feature.brush ? {
+        ...customOption.toolbox,
+        feature: {
+          ...customOption.toolbox.feature,
+          brush: showBrush ? {} : undefined
+        }
+      } : customOption.toolbox,
       legend: customOption.legend || (legend ? { data: data.map(item => item.seriesName) } : undefined),
       xAxis: getXAxis(),
       yAxis: customOption.yAxis || [
