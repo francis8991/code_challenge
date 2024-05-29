@@ -44,7 +44,6 @@
         }
       }
     }
-
     instance = echartInstance
 
     EVENT_NAMES.forEach((eventName) => {
@@ -54,7 +53,7 @@
     return action as ChartAction
   }
   const initial = (element: HTMLElement) => {
-    if (instance) instance.dispose()
+    instance?.dispose()
     const action = initChartAction(element, theme, initOptions)
     dispatch('register', {
       instance: action
@@ -93,6 +92,10 @@
     }
     [style, className]
   }
+
+  export const getInstance = () => {
+    return instance
+  }
 </script>
 
 <style>
@@ -103,4 +106,4 @@
 </style>
 
 
-<div bind:this={echartElement} use:initChart {...$$restProps} class={elClassName}></div>
+<div bind:this={echartElement} use:initChart {...$$restProps} {style} class={elClassName}></div>

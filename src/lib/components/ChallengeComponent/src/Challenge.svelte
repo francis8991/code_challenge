@@ -1,5 +1,5 @@
 <script lang="ts" generics="R extends Record<string, any>, T extends Record<string, any>">
-  import { tick, onMount, createEventDispatcher } from 'svelte'
+  import { onMount, createEventDispatcher } from 'svelte'
   import Chart, { useEchart, EVENT_NAMES, type EventHandlers } from '@/lib/components/Echart'
   import type { LineSeriesOption, EChartOption } from 'echarts'
   import type { ModeType, AreaStyleProps, DataType, AreaStyle, ChallengeOption } from './types'
@@ -61,10 +61,7 @@
   // export function isMultilple(val: any): val is MultipleDataType<T>[] {
   //   return val && 'seriesName' in val[0];
   // }
-  const [register, {
-    setOption,
-    clear
-  }] = useEchart()
+  const [register, chartAction] = useEchart()
 
   function getAreaStyle(record: DataType<R, T>, i: number): AreaStyle {
     if (mode !== 'stack') return undefined
@@ -100,18 +97,12 @@
     })
   }
 
-  const formatOptions = async (customOption: ChallengeOption) => {
-    clear()
-    setOption({
+  const formatOptions = async (customOption: ChallengeOption, legend: boolean) => {
+    chartAction.clear()
+    chartAction.setOption({
       ...customOption,
-      toolbox: customOption.toolbox?.feature && !customOption.toolbox?.feature.brush ? {
-        ...customOption.toolbox,
-        feature: {
-          ...customOption.toolbox.feature,
-          brush: showBrush ? {} : undefined
-        }
-      } : customOption.toolbox,
-      legend: customOption.legend || (legend ? { data: data.map(item => item.seriesName) } : undefined),
+      brush: showBrush ? customOption.brush || { toolbox: ['rect', 'polygon', 'keep', 'clear'] } : undefined,
+      legend: legend ? customOption.legend || { data: data.map(item => item.seriesName) } : undefined,
       xAxis: getXAxis(),
       yAxis: customOption.yAxis || [
         {
@@ -123,8 +114,12 @@
   }
 
   $: {
-    if (data.length) formatOptions(option)
+    if (data.length) formatOptions(option, legend)
     [mode]
+  }
+
+  export const getInstance = () => {
+    return chartAction
   }
 </script>
 

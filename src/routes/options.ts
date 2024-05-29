@@ -33,8 +33,11 @@ const demo1: Demo = {
       feature: {
         saveAsImage: {},
         dataZoom: {},
-        brush: {}
       }
+    },
+    brush: {
+      toolbox: ['rect', 'polygon', 'keep', 'clear'],
+      transformable: false
     },
     dataZoom: [
       {

@@ -12,7 +12,8 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
-		"test:unit": "vitest"
+		"test:unit": "vitest",
+		"test:coverage": "vitest run --coverage --coverage.include=src/lib/*"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -24,13 +25,16 @@
 		"@types/d3": "^7.4.3",
 		"@types/echarts": "^4.9.22",
 		"@types/eslint": "^8.56.0",
+		"@types/jsdom": "^21.1.6",
 		"@types/node": "^20.12.12",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
+		"@vitest/coverage-v8": "^1.6.0",
 		"autoprefixer": "^10.4.19",
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0-next.4",
+		"jest-canvas-mock": "^2.5.2",
 		"jsdom": "^24.1.0",
 		"postcss": "^8.4.38",
 		"prettier": "^3.1.1",
