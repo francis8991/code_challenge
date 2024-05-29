@@ -9,6 +9,7 @@
   export let data: DataType<R, T>[] = []
   export let areaStyle: AreaStyleProps<R, T> = undefined
   export let showBrush: boolean = true
+  export let showLegend: boolean = true
   export let fieldNames: { xAxis: string; yAxis: string } = { xAxis: 'xAxis', yAxis: 'yAxis' }
   export let xAxisTextStyle: ((record: T, index?: number) => EChartOption['textStyle']) | undefined = undefined
   export let option: ChallengeOption = {
@@ -45,7 +46,6 @@
       }
     ]
   }
-  export let legend: boolean = false
   export const formatData: undefined | ((v: T) => LineSeriesDataItem) = undefined
 
   let chartComponent: Chart
@@ -97,11 +97,11 @@
     })
   }
 
-  const formatOptions = async (customOption: ChallengeOption, legend: boolean) => {
+  const formatOptions = async (customOption: ChallengeOption, legend: boolean, brush: boolean) => {
     chartAction.clear()
     chartAction.setOption({
       ...customOption,
-      brush: showBrush ? customOption.brush || { toolbox: ['rect', 'polygon', 'keep', 'clear'] } : undefined,
+      brush: brush ? customOption.brush || { toolbox: ['rect', 'polygon', 'keep', 'clear'] } : undefined,
       legend: legend ? customOption.legend || { data: data.map(item => item.seriesName) } : undefined,
       xAxis: getXAxis(),
       yAxis: customOption.yAxis || [
@@ -114,7 +114,7 @@
   }
 
   $: {
-    if (data.length) formatOptions(option, legend)
+    if (data.length) formatOptions(option, showLegend, showBrush)
     [mode]
   }
 

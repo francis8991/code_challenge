@@ -10,8 +10,7 @@
   import type { ChartAction } from './echarts'
 
   type EchartsTheme = string | object | null
-  export const theme: EchartsTheme = 'light'
-
+  export let theme: EchartsTheme = 'light'
   // the style of echarts div.
   export let className = ''
   export let style = ''
@@ -74,6 +73,7 @@
 
   function changeTheme(theme: EchartsTheme) {
     prevTheme !== theme && initial(echartElement)
+    prevTheme = theme
   }
 
   onMount(() => {

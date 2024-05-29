@@ -2,6 +2,20 @@ import { render } from '@testing-library/svelte'
 import { describe, it, expect } from 'vitest'
 import Challenge from '$lib/components/ChallengeComponent'
 
+const options = {
+  series: [{ lineStyle: { width: 3 } }],
+  toolbox: {
+    feature: {
+      saveAsImage: {}
+    }
+  },
+  legend: {
+    data: ['test']
+  },
+  brush: {
+    toolbox: ['keep', 'lineY', 'clear']
+  }
+}
 describe('Challenge', () => {
   it('renders chart with given empty options', () => {
     const { container, baseElement } = render(Challenge, { props: {} });
@@ -76,7 +90,7 @@ describe('Challenge', () => {
   })
 
   it('renders chart with given props data', () => {
-    const { container, baseElement, component } = render(Challenge, { props: { option: {}, mode: 'line', data: [], legend: true } });
+    const { container, baseElement, component } = render(Challenge, { props: { options, mode: 'line', data: [] } });
     const chartElement = container.querySelector('div');
     expect(chartElement).toBeInTheDocument();
 
@@ -88,49 +102,14 @@ describe('Challenge', () => {
     
     component.$set({ mode: 'stack', data: [{seriesName: 'stack', data: []}] })
     component.$set({ mode: 'line' })
-    component.$set({
-      data: [{seriesName: 'stack', data: []}],
-      option: {
-        series: [{ lineStyle: { width: 3 } }],
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        legend: {
-          data: ['test']
-        }
-      },
-      legend: false
-    })
 
     component.$set({
       data: [{seriesName: 'stack', data: []}],
-      option: {
-        series: [{ lineStyle: { width: 3 } }],
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        legend: {
-          data: ['test']
-        }
-      },
+      showBrush: false
     })
     component.$set({
       data: [{seriesName: 'stack', data: []}],
-      option: {
-        series: [{ lineStyle: { width: 3 } }],
-        toolbox: {
-          feature: {
-            saveAsImage: {},
-            brush: {}
-          }
-        },
-        legend: undefined
-      },
-      legend: true
+      showLegend: false,
     })
 
     expect(baseElement.querySelector('svg'), 'chart svg not found').toBeTruthy()

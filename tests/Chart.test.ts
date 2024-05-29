@@ -77,6 +77,10 @@ describe('Chart', () => {
     ).toBeTruthy()
     expect(baseElement.querySelector('svg'), 'chart svg not found').toBeTruthy()
 
+    component.$set({
+      theme: 'light',
+      className: 'test'
+    })
     const instance = component.getInstance()
     expect(instance).not.toBeUndefined()
   })
